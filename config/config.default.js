@@ -31,6 +31,18 @@ module.exports = appInfo => {
     },
   };
 
+  // connection
+  config.mongoose = {
+    client: {
+      url: 'mongodb://127.0.0.1/douban',
+      options: {
+        useUnifiedTopology: true, // warn #1
+      },
+      // mongoose global plugins, expected a function or an array of function and options
+      plugins: [],
+    },
+  };
+
   return {
     ...config,
     ...userConfig,
