@@ -17,7 +17,7 @@ class BooksController extends Controller {
 
     ctx.body = {
       list: dataList,
-      tatal: dataList.length,
+      total: dataList.length,
     };
   }
 
@@ -29,13 +29,26 @@ class BooksController extends Controller {
     start = Number.parseInt(start);
     count = Number.parseInt(count);
     const dataList = await ctx.model.Books.find({
-      title: new RegExp(`/${q}/gi`),
+      title: new RegExp(`${q}`, 'i'),
     }, { _id: 0 }).skip(start).limit(count);
 
     ctx.body = {
       list: dataList,
-      tatal: dataList.length,
+      total: dataList.length,
     };
+  }
+
+  async _isbn() {
+    const { ctx } = this;
+    const isbn = Number.parseInt(ctx.params.isbn);
+
+    if (ctx.isISBN(isbn)) {
+      console.log(isbn);
+      const dataList = await ctx.model.Books.findOne({ isbn }, { _id: 0 });
+      ctx.body = dataList || {};
+    } else {
+      ctx.body = { msg: 'isbn值不合法' };
+    }
   }
 }
 
