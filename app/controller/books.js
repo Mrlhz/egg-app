@@ -40,16 +40,30 @@ class BooksController extends Controller {
 
   async _isbn() {
     const { ctx } = this;
-    const isbn = Number.parseInt(ctx.params.isbn);
+    let isbn = ctx.params.isbn;
 
     if (ctx.isISBN(isbn)) {
-      console.log(isbn);
+      isbn = Number.parseInt(isbn);
       const dataList = await ctx.model.Books.findOne({ isbn }, { _id: 0 });
       ctx.body = dataList || {};
     } else {
       ctx.body = { msg: 'isbn值不合法' };
     }
   }
+
+  async getBookTags() {
+    const { ctx } = this;
+    const { q } = ctx.query;
+
+    const query = q ? { tag: new RegExp(q, 'i') } : {};
+    let dataList = await ctx.model.BookTags.find(query, { _id: 0 });
+    dataList = dataList.map(item => item.tag);
+    ctx.body = {
+      list: dataList,
+      total: dataList.length,
+    };
+  }
+
 }
 
 module.exports = BooksController;

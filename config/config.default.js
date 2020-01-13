@@ -43,6 +43,8 @@ module.exports = appInfo => {
     },
   };
 
+  config.middleware = [ 'notfoundHandler' ]; // notfound_handler => notfoundHandler
+
   return {
     ...config,
     ...userConfig,
