@@ -7,7 +7,7 @@ module.exports = () => {
         ctx.body = { error: 'Not Found' };
       } else {
         // ctx.body = '<h1>Page Not Found</h1>';
-        await ctx.render('404.tpl');
+        await ctx.render('404.html');
       }
     }
   };

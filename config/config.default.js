@@ -25,9 +25,10 @@ module.exports = appInfo => {
 
   // 添加 view 配置
   config.view = {
-    defaultViewEngine: 'nunjucks',
+    defaultViewEngine: 'ejs',
     mapping: {
-      '.tpl': 'nunjucks',
+      '.ejs': 'ejs',
+      '.html': 'nunjucks',
     },
   };
 

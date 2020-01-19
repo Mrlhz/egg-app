@@ -1,0 +1,30 @@
+<%- include('header') -%>
+<link rel="stylesheet" href="/public/css/search-result.css">
+<div class="container">
+
+  <% if (q) { %>
+    <%- include('search-result') -%>
+  <% } %>
+  <hr>
+
+  <% if (dataList.length) { %>
+    <% dataList.forEach(function (item) { %>
+      <%# Notice how the single quotation mark is escaped in the output HTML %>
+      <div class="row col-padding">
+        <a href="/" class="">
+          <div class="col-md-2">
+            <img class="book-img-small shadow" src="<%= 'https://images.weserv.nl/?url=' + item.image %>">
+          </div>
+          <div class="col-md-7 flex-vertical description-font">
+            <span class="title"><%= item.title %> </span>
+            <span><%= item.author.join(' ') %>   /  <%= item.publisher %>  /  <%= item.price %> </span>
+            <span class="summary"><%= item.summary %> </span>
+          </div>
+        </a>
+      </div>
+      <div class="row"></div>
+    <% }) %>
+  <% } else { %>
+    无查询数据
+  <% } %>
+</div>

@@ -4,7 +4,55 @@
 const Controller = require('egg').Controller;
 
 class BooksController extends Controller {
+  async query(ctx, params = {}) {
+    let { q, start = 0 } = params;
+    start = Number.parseInt(start);
+    let dataList = null;
+    if (ctx.isISBN(q)) {
+      dataList = await ctx.model.Books.find({
+        isbn: Number.parseInt(q),
+      }, { _id: 0 });
+    } else {
+      const queryParam = q ? { title: new RegExp(`${q}`, 'i') } : {};
+      dataList = await ctx.model.Books.find(queryParam, { _id: 0 }).skip(start);
+    }
+
+    return dataList;
+  }
+
   async index() {
+    const { ctx } = this;
+    let { start = 0, count = 20 } = ctx.query;
+    console.info(ctx.query);
+    // todo
+    start = Number.parseInt(start);
+    count = Number.parseInt(count);
+    const dataList = await ctx.model.Books.find({
+      // category: [ '编程' ],
+    }, { _id: 0 }).skip(start).limit(count);
+
+    await ctx.render('books/index.ejs', {
+      dataList,
+      q: '',
+      total: 0,
+    });
+  }
+
+  async search() {
+    const { ctx } = this;
+    console.log(ctx.request.body, ctx.query);
+    const { q } = ctx.request.body;
+
+    const dataList = await this.query(ctx, { q });
+    await ctx.render('books/index.ejs', {
+      dataList,
+      total: dataList.length,
+      q,
+    });
+
+  }
+
+  async _index() {
     const { ctx } = this;
     let { start = 0, count = 20 } = ctx.query;
     console.info(ctx.query);
@@ -17,23 +65,7 @@ class BooksController extends Controller {
 
     ctx.body = {
       list: dataList,
-      total: dataList.length,
-    };
-  }
-
-  async search() {
-    const { ctx } = this;
-    let { q, start = 0, count = 20 } = ctx.query;
-
-    console.log(ctx.query);
-    start = Number.parseInt(start);
-    count = Number.parseInt(count);
-    const dataList = await ctx.model.Books.find({
-      title: new RegExp(`${q}`, 'i'),
-    }, { _id: 0 }).skip(start).limit(count);
-
-    ctx.body = {
-      list: dataList,
+      start,
       total: dataList.length,
     };
   }
@@ -44,24 +76,13 @@ class BooksController extends Controller {
 
     if (ctx.isISBN(isbn)) {
       isbn = Number.parseInt(isbn);
-      const dataList = await ctx.model.Books.findOne({ isbn }, { _id: 0 });
+      const dataList = await ctx.model.Books.findOne({
+        isbn,
+      }, { _id: 0 });
       ctx.body = dataList || {};
     } else {
       ctx.body = { msg: 'isbn值不合法' };
     }
-  }
-
-  async getBookTags() {
-    const { ctx } = this;
-    const { q } = ctx.query;
-
-    const query = q ? { tag: new RegExp(q, 'i') } : {};
-    let dataList = await ctx.model.BookTags.find(query, { _id: 0 });
-    dataList = dataList.map(item => item.tag);
-    ctx.body = {
-      list: dataList,
-      total: dataList.length,
-    };
   }
 
 }

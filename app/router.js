@@ -10,8 +10,9 @@ module.exports = app => {
   router.get('/ua', controller.home.ua);
   router.get('/news', controller.news.list);
   router.get('/books', controller.books.index);
-  router.get('/search', controller.books.search);
+  router.post('/books/search', controller.books.search);
+  // router.get('/search', controller.books.search);
   router.get('/isbn/:isbn', controller.books._isbn);
-  router.get('/tags', controller.books.getBookTags);
+  router.get('/tags', controller.bookTags.getBookTags);
   router.get('/goods', controller.home.goods);
 };
