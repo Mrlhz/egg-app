@@ -1,0 +1,68 @@
+<%- include('head') -%>
+<%- include('search') -%>
+<link rel="stylesheet" href="/public/css/book-detail.css">
+<div class="container">
+  <div class="row">
+  </div>
+  <div class="row book-container">
+    <div class="col-md-2">
+      <img class="book-img" src="<%= 'https://images.weserv.nl/?url=' + item.image %> ">
+    </div>
+    <div style="margin-left: 30px;" class="col-md-5 flex-vertical">
+      <div>
+        <h4><%= item.title %></h4>
+      </div>
+      <div class="description-font-margin">
+        <div>
+          <span>作者:</span>
+          <span><%= item.author %></span>
+        </div>
+        <div>
+          <span>出版社:</span>
+          <span><%= item.publisher %></span>
+        </div>
+        <div>
+          <span>出版年：</span>
+          <span><%= item.pubdate %></span>
+        </div>
+        <div>
+          <span>页数：</span>
+          <span><%= item.pages %></span>
+        </div>
+        <div>
+          <span>定价：</span>
+          <span><%= item.price %></span>
+        </div>
+        <div>
+          <span>精装：</span>
+          <span><%= item.binding %></span>
+        </div>
+        <div>
+          <span>ISBN：</span>
+          <span id="isbn"><%= item.isbn %></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:30px;" class="row">
+    <div class="col-md-1">
+      <a class="btn btn-outline" href="#modal">
+        赠送此书
+      </a>
+    </div>
+    <div style="margin-left:30px;" class="col-md-1">
+      <a class="btn btn-outline" href="/wish/book/9787121068744">
+        加入到心愿清单
+      </a>
+    </div>
+  </div>
+  <div style="margin-top: 30px;" class="row">
+    <div class="col-md-2"><span class="description-title">内容简介</span></div>
+  </div>
+  <div style="margin-top:15px;" class="row">
+    <div class="col-md-11">
+      <p class="description-font"><%= item.summary %> </p>
+    </div>
+  </div>
+</div>

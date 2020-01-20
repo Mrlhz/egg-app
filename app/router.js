@@ -11,6 +11,7 @@ module.exports = app => {
   router.get('/news', controller.news.list);
   router.get('/books', controller.books.index);
   router.post('/books/search', controller.books.search);
+  router.get('/books/:isbn/detail', controller.books.detail);
   // router.get('/search', controller.books.search);
   router.get('/isbn/:isbn', controller.books._isbn);
   router.get('/tags', controller.bookTags.getBookTags);

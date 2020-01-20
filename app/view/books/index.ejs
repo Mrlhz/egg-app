@@ -1,9 +1,10 @@
 <%- include('header') -%>
+<link rel="stylesheet" href="/public/css/index.css">
 <link rel="stylesheet" href="/public/css/search-result.css">
 <div class="container">
 
   <% if (q) { %>
-    <%- include('search-result') -%>
+    <%- include('search_result') -%>
   <% } %>
   <hr>
 
@@ -11,7 +12,7 @@
     <% dataList.forEach(function (item) { %>
       <%# Notice how the single quotation mark is escaped in the output HTML %>
       <div class="row col-padding">
-        <a href="/" class="">
+        <a href="/books/<%=item.isbn%>/detail" class="">
           <div class="col-md-2">
             <img class="book-img-small shadow" src="<%= 'https://images.weserv.nl/?url=' + item.image %>">
           </div>
