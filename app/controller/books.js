@@ -27,14 +27,12 @@ class BooksController extends Controller {
     // todo
     start = Number.parseInt(start);
     count = Number.parseInt(count);
-    const dataList = await ctx.model.Books.find({
-      // category: [ '编程' ],
-    }, { _id: 0 }).skip(start).limit(count);
+    const dataList = await this.query(ctx, { start });
 
     await ctx.render('books/index.ejs', {
-      dataList,
-      q: '',
-      total: 0,
+      dataList: dataList.slice(0, count),
+      q: '默认显示',
+      total: dataList.length,
     });
   }
 
@@ -49,7 +47,17 @@ class BooksController extends Controller {
       total: dataList.length,
       q,
     });
+  }
 
+  async detail() {
+    const { ctx } = this;
+    const { isbn } = ctx.params;
+    const item = await ctx.model.Books.findOne({
+      isbn: Number.parseInt(isbn),
+    }, { _id: 0 });
+    await ctx.render('books/book_detail.ejs', {
+      item,
+    });
   }
 
   async _index() {
