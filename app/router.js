@@ -16,4 +16,9 @@ module.exports = app => {
   router.get('/isbn/:isbn', controller.books._isbn);
   router.get('/tags', controller.bookTags.getBookTags);
   router.get('/goods', controller.home.goods);
+
+  // api
+  router.get('/v1/books', controller.books.getBooks);
+  router.get('/v1/books/search', controller.books.searchBooks);
+  router.get('/v1/books/:isbn', controller.books.getBookDetail);
 };

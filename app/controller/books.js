@@ -22,57 +22,76 @@ class BooksController extends Controller {
 
   async index() {
     const { ctx } = this;
-    let { start = 0, count = 20 } = ctx.query;
-    console.info(ctx.query);
-    // todo
-    start = Number.parseInt(start);
-    count = Number.parseInt(count);
-    const dataList = await this.query(ctx, { start });
+    const data = await this._index(ctx);
+    await ctx.render('books/index.ejs', data);
+  }
 
-    await ctx.render('books/index.ejs', {
-      dataList: dataList.slice(0, count),
-      q: '默认显示',
-      total: dataList.length,
-    });
+  async getBooks() {
+    const { ctx } = this;
+    const data = await this._index(ctx);
+    ctx.body = data;
   }
 
   async search() {
     const { ctx } = this;
-    console.log(ctx.request.body, ctx.query);
-    const { q } = ctx.request.body;
+    const data = await this._search(ctx);
+    await ctx.render('books/index.ejs', data);
+  }
+
+  async searchBooks() {
+    const { ctx } = this;
+    ctx.body = await this._search(ctx);
+  }
+
+  async _search(ctx) {
+    console.log(ctx.query, ctx.request.body);
+    let q = ctx.request.body.q;
+    q = q ? q : ctx.query.q;
+    let { start = 0, count = 20 } = ctx.query;
+
+    start = Number.parseInt(start);
+    count = Number.parseInt(count);
 
     const dataList = await this.query(ctx, { q });
-    await ctx.render('books/index.ejs', {
-      dataList,
+    return {
+      dataList: dataList.slice(start, start + count),
       total: dataList.length,
       q,
-    });
+    };
   }
 
   async detail() {
     const { ctx } = this;
-    const { isbn } = ctx.params;
-    const item = await ctx.model.Books.findOne({
-      isbn: Number.parseInt(isbn),
-    }, { _id: 0 });
+    const item = await this._detail(ctx);
     await ctx.render('books/book_detail.ejs', {
       item,
     });
   }
 
-  async _index() {
+  async getBookDetail() {
     const { ctx } = this;
+    ctx.body = await this._detail();
+  }
+
+  async _detail() {
+    const { ctx } = this;
+    const { isbn } = ctx.params;
+    console.log(ctx.params);
+    return await ctx.model.Books.findOne({
+      isbn: Number.parseInt(isbn),
+    }, { _id: 0 });
+  }
+
+  async _index(ctx) {
+    // const { ctx } = this;
     let { start = 0, count = 20 } = ctx.query;
     console.info(ctx.query);
-    // todo
-    start = Number.parseInt(start);
     count = Number.parseInt(count);
-    const dataList = await ctx.model.Books.find({
-      // category: [ '编程' ],
-    }, { _id: 0 }).skip(start).limit(count);
+    const dataList = await this.query(ctx, { start });
 
-    ctx.body = {
-      list: dataList,
+    return {
+      dataList: dataList.slice(0, count),
+      q: '默认显示',
       start,
       total: dataList.length,
     };
