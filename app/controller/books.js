@@ -28,8 +28,7 @@ class BooksController extends Controller {
 
   async getBooks() {
     const { ctx } = this;
-    const data = await this._index(ctx);
-    ctx.body = data;
+    ctx.body = await this._index(ctx);
   }
 
   async search() {
