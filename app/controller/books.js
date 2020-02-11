@@ -4,8 +4,8 @@
 const Controller = require('egg').Controller;
 
 class BooksController extends Controller {
-  async query(ctx, params = {}) {
-    let { q, start = 0 } = params;
+  async queryData(ctx, params = {}) {
+    let { q, start = 0, count = 20 } = params;
     start = Number.parseInt(start);
     let dataList = null;
     if (ctx.isISBN(q)) {
@@ -14,7 +14,7 @@ class BooksController extends Controller {
       }, { _id: 0 });
     } else {
       const queryParam = q ? { title: new RegExp(`${q}`, 'i') } : {};
-      dataList = await ctx.model.Books.find(queryParam, { _id: 0 }).skip(start);
+      dataList = await ctx.model.Books.find(queryParam, { _id: 0 }).skip(start).limit(count);
     }
 
     return dataList;
@@ -22,7 +22,9 @@ class BooksController extends Controller {
 
   async index() {
     const { ctx } = this;
+    console.time('index time');
     const data = await this._index(ctx);
+    console.timeEnd('index time');
     await ctx.render('books/index.ejs', data);
   }
 
@@ -51,7 +53,7 @@ class BooksController extends Controller {
     start = Number.parseInt(start);
     count = Number.parseInt(count);
 
-    const dataList = await this.query(ctx, { q });
+    const dataList = await this.queryData(ctx, { q });
     return {
       dataList: dataList.slice(start, start + count),
       total: dataList.length,
@@ -86,13 +88,13 @@ class BooksController extends Controller {
     let { start = 0, count = 20 } = ctx.query;
     console.info(ctx.query);
     count = Number.parseInt(count);
-    const dataList = await this.query(ctx, { start });
-
+    const dataList = await this.queryData(ctx, { start, count });
+    const total = await ctx.model.Books.count();
     return {
       dataList: dataList.slice(0, count),
       q: '默认显示',
-      start,
-      total: dataList.length,
+      start: Number.parseInt(start),
+      total, // 查询太慢: dataList.length
     };
   }
 
