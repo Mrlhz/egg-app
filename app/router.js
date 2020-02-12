@@ -9,16 +9,19 @@ module.exports = app => {
   router.get('/ctx', controller.home.see);
   router.get('/ua', controller.home.ua);
   router.get('/news', controller.news.list);
-  router.get('/books', controller.books.index);
-  router.post('/books/search', controller.books.search);
-  router.get('/books/:isbn/detail', controller.books.detail);
+  router.get('/books', controller.books.index.index);
+  router.post('/books/search', controller.books.search.search);
+  router.get('/books/:isbn/detail', controller.books.detail.detail);
   // router.get('/search', controller.books.search);
-  router.get('/isbn/:isbn', controller.books._isbn);
-  router.get('/tags', controller.bookTags.getBookTags);
+  router.get('/isbn/:isbn', controller.books.isbn.isbn);
+  router.get('/tags', controller.books.bookTags.getBookTags);
   router.get('/goods', controller.home.goods);
 
   // api
-  router.get('/v1/books', controller.books.getBooks);
-  router.get('/v1/books/search', controller.books.searchBooks);
-  router.get('/v1/books/:isbn', controller.books.getBookDetail);
+  router.get('/v1/books', controller.books.index.getBooks);
+  router.get('/v1/books/search', controller.books.search.searchBooks);
+  router.get('/v1/books/:isbn', controller.books.detail.getBookDetail);
+
+  // test
+  router.get('/test', controller.sub.index.test);
 };
