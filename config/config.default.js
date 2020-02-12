@@ -44,7 +44,11 @@ module.exports = appInfo => {
     },
   };
 
-  config.middleware = [ 'notfoundHandler' ]; // notfound_handler => notfoundHandler
+  config.middleware = [ 'notfoundHandler', 'errorHandler' ]; // notfound_handler => notfoundHandler
+  // 只对 /api 前缀的 url 路径生效
+  config.errorHandler = {
+    match: '/api',
+  };
 
   return {
     ...config,
