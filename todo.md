@@ -39,3 +39,33 @@ https://github.com/mde/ejs/tree/master/examples
 
 
 - [Egg.js_POST 提交表单时的 CSRF 安全验证](https://www.jianshu.com/p/0ec1bcff0ecd)
+
+
+### 登陆注册
+
+- 密码加密 彩虹攻击
+
+https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/models-definition.md#getters--setters
+
+
+http://www.mongoosejs.net/docs/api.html#schematype_SchemaType-set
+- [mongoose schema层加解密（getters setters](https://www.jianshu.com/p/5150c78a8731)
+
+参考
+https://github.com/cnodejs/egg-cnode
+https://github.com/shinygang/Vue-cnodejs
+
+
+https://blog.csdn.net/duola8789/article/details/89853779
+
+
+
+
+### bug
+
+mongoose中的Schema设置unique不生效问题
+
+
+### 
+
+- [Mongoose解决MongoDB弃用警告（DeprecationWarning）](https://blog.csdn.net/qq_42760049/article/details/98593923)

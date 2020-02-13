@@ -23,7 +23,8 @@ class BooksController extends Controller {
     let { start = 0, count = 20 } = ctx.query;
     start = Number.parseInt(start);
     count = Number.parseInt(count);
-    const total = await ctx.model.Books.count();
+    const total = await ctx.model.Books.estimatedDocumentCount(); // all documents in the collection
+    // const total = await ctx.model.Books.countDocuments({ category: { $in: [ '编程' ] } }); // filter
     const dataList = await ctx.model.Books.find({}, { _id: 0 })
       .skip(start)
       .limit(count);
@@ -31,7 +32,7 @@ class BooksController extends Controller {
       dataList,
       q: '默认显示',
       start: Number.parseInt(start),
-      total, // 查询太慢: dataList.length
+      total,
     };
   }
 }

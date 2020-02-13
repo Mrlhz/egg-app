@@ -1,5 +1,7 @@
 ## mongoose
 
+- [mongoose](https://www.npmjs.com/package/mongoose)
+- [mongoose 中文文档](http://www.mongoosejs.net/)
 - [mongoose使用之查询篇](https://www.jianshu.com/p/554a5bf67b31)
 
 
@@ -53,7 +55,10 @@ db.news.find( {}, {content: 0 } )
 
 
 ```js
+const total = await ctx.model.Books.estimatedDocumentCount(); // all documents in the collection
+const total = await ctx.model.Books.countDocuments({ category: { $in: [ '编程' ] } }); // filter
 
+// DeprecationWarning: collection.count is deprecated, and will be removed in a future version
 Model.count()
 // 获取文档个数
 const total = await ctx.model.Books.count();
