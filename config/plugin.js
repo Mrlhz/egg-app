@@ -23,4 +23,8 @@ module.exports = {
     enable: true,
     path: path.join(__dirname, '../lib/plugin/egg-ua'),
   },
+  validate: {
+    enable: true,
+    package: 'egg-validate',
+  },
 };
