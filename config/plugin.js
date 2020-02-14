@@ -25,6 +25,6 @@ module.exports = {
   },
   validate: {
     enable: true,
-    package: 'egg-validate',
+    path: path.join(__dirname, '../lib/plugin/egg-validate'),
   },
 };
