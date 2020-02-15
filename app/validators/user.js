@@ -6,6 +6,7 @@
  */
 class RegisterValidator {
   constructor(ctx) {
+    this.ctx = ctx;
     this.email = [
       new ctx.Rule('isEmail', '不符合Email规范'),
     ];
@@ -27,6 +28,10 @@ class RegisterValidator {
         max: 32,
       }),
     ];
+
+    this.openid = [
+      new ctx.Rule('isOptional'),
+    ];
   }
 
   validatePassword(vals) {
@@ -39,9 +44,18 @@ class RegisterValidator {
 
   async validateEmail(vals) {
     const email = vals.body.email;
-    const user = await this.ctx.modle.User.findOne({ email });
+    const user = await this.ctx.model.User.findOne({ email });
     if (user) {
       throw new Error('email已存在');
+    }
+  }
+
+  async validateOpenId(vals) {
+    const openid = vals.body.openid;
+    if (!openid) return; // 允许null
+    const open_id = await this.ctx.model.User.findOne({ openid });
+    if (open_id) {
+      throw new Error('openid已存在');
     }
   }
 

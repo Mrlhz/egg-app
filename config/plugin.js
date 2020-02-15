@@ -19,7 +19,7 @@ module.exports = {
     enable: true,
     package: 'egg-view-ejs',
   },
-  us: {
+  ua: {
     enable: true,
     path: path.join(__dirname, '../lib/plugin/egg-ua'),
   },

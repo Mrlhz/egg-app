@@ -27,7 +27,7 @@ module.exports = app => {
     },
     openid: {
       type: String,
-      unique: true,
+      // unique: true,
     },
   });
 

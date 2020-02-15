@@ -2,17 +2,13 @@
 
 // app/controller/books.js
 const Controller = require('egg').Controller;
+const { SearchValidator } = require('../../validators/books');
 
 class SearchController extends Controller {
   async queryData(ctx) {
-    console.log('search', ctx.query, ctx.request.body);
-    let { start = 0, count = 20 } = ctx.query; // for api
-    let q = ctx.request.body.q; // 输入框
-    q = q ? q : ctx.query.q; // if true for api
-    q = q ? q.trim() : null;
-    start = Number.parseInt(start);
-    count = Number.parseInt(count);
-
+    const rule = new SearchValidator(ctx);
+    const { q, start = 0, count = 20 } = await ctx.validate(rule, [ 'body', 'query' ]);
+    const total = await ctx.model.Books.estimatedDocumentCount();
     let dataList = null;
     if (ctx.isISBN(q)) {
       dataList = await ctx.model.Books.find({
@@ -20,11 +16,12 @@ class SearchController extends Controller {
       }, { _id: 0 });
     } else {
       const queryParam = q ? { title: new RegExp(`${q}`, 'i') } : {};
-      dataList = await ctx.model.Books.find(queryParam, { _id: 0 }).skip(start);
+      dataList = await ctx.model.Books.find(queryParam, { _id: 0 }).skip(start).limit(count);
     }
     return {
-      dataList: dataList.slice(start, start + count),
-      total: dataList.length,
+      dataList,
+      count,
+      total,
       q,
     };
   }
