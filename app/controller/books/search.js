@@ -9,7 +9,7 @@ class SearchController extends Controller {
     let { start = 0, count = 20 } = ctx.query; // for api
     let q = ctx.request.body.q; // 输入框
     q = q ? q : ctx.query.q; // if true for api
-    q = q.trim();
+    q = q ? q.trim() : null;
     start = Number.parseInt(start);
     count = Number.parseInt(count);
 
