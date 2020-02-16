@@ -4,10 +4,12 @@ class SearchValidator {
   constructor(ctx) {
     this.ctx = ctx;
     this.q = [
-      // new ctx.Rule('isLength', '搜索关键词不能为空', {
-      //   min: 1,
+      // new ctx.Rule('isLength', '搜索关键词不符合规范', {
+      //   min: 0, // 搜索关键词不能为空 ?
       //   max: 16,
       // }),
+      // 匹配中文、英文、数字、空白字符
+      new ctx.Rule('matches', '搜索关键词不符合规范', '^[\u4E00-\u9FA5A-Za-z0-9\s]+$'),
       new ctx.Rule('isOptional', '', ''),
     ];
 
