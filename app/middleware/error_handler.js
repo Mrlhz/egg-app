@@ -19,7 +19,7 @@ module.exports = () => {
       ctx.body = {
         error,
         errorCode: 999,
-        request: `${ctx.request.method} ${ctx.request.url}`,
+        request: `${ctx.request.method} ${decodeURIComponent(ctx.request.url)}`,
       };
       if (status === 422) {
         ctx.body.detail = err.errors;
