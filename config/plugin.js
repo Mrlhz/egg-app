@@ -27,4 +27,8 @@ module.exports = {
     enable: true,
     path: path.join(__dirname, '../lib/plugin/egg-validate'),
   },
+  cors: {
+    enable: true,
+    package: 'egg-cors',
+  },
 };

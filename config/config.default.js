@@ -50,6 +50,19 @@ module.exports = appInfo => {
   //   match: '/v1',
   // };
 
+  // 允许跨域
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+    domainWhiteList: [ '*' ],
+  };
+
+  config.cors = {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  };
+
   return {
     ...config,
     ...userConfig,
